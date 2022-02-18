@@ -18,7 +18,6 @@ namespace API.Entities
         public string AccountType { get; set; }
         public bool Disabled { get; set; }
         public ICollection<int> MessagesRecieved { get; set; }
-        //Create a byte[] for the apiKey
 
         public string GetUserName()
         {

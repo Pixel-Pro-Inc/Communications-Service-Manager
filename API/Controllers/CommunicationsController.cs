@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +24,11 @@ namespace API.Controllers
 
         public async void SendMessage(string phonenumber, string email, string msg, string subject)
         {
-            //Send SMS
-            /*TwilioClient.Init(apiKeySid, apiKeySecret, accountSid);
 
-            var message = await MessageResource.CreateAsync(
-                body: msg,
-                from: "BOTC",
-                to: new Twilio.Types.PhoneNumber("+267" + phonenumber)
-            );*/
-
-            if (email == "")
+            /*
+                if (email == "")
                 return;
 
-            //Send Email
             MailMessage mailMessage = new MailMessage();
             MailAddress fromMail = new MailAddress(Configuration["smtpSettings:Account"]);
             mailMessage.From = fromMail;
@@ -61,6 +55,54 @@ namespace API.Controllers
             {
                 return;
             }
+             
+             */
+
+        }
+        public async Task<string> Send()
+        {
+
+            var response = await SendEmail();
+
+            var message = "Your message could not be processed at this time. Please try again later.";
+
+            if (response.StatusCode == HttpStatusCode.Accepted)
+            {
+                message = "Thank you for your message, someone will be in touch soon!";
+            }
+            return message;
+        }
+
+        private async void SendSMS()
+        {
+            //Send SMS
+            /*
+             TwilioClient.Init(apiKeySid, apiKeySecret, accountSid);
+
+            var message = await MessageResource.CreateAsync(
+                body: msg,
+                from: "BOTC",
+                to: new Twilio.Types.PhoneNumber("+267" + phonenumber)
+            );
+             */
+
+        }
+        [HttpPost("sendEmail")]
+        private async Task<Response> SendEmail()
+        {
+
+            var apiKey = Configuration["SendGridsettings:apiKey"];
+            var client = new SendGridClient(apiKey);
+            var msg = new SendGridMessage()
+            {
+                From = new EmailAddress("pixelprocompanyco@gmail.com", "PX Team"),
+                Subject = "Sending with Twilio SendGrid is Fun",
+                PlainTextContent = "and easy to do anywhere, even with C#",
+                HtmlContent = "<strong>and easy to do anywhere, even with C#</strong>"
+            };
+            msg.AddTo(new EmailAddress("pixelprocompanyco@gmail.com", "Test User"));
+            var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
+            return response;
         }
     }
 }
