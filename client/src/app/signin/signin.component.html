@@ -1,0 +1,37 @@
+<body>
+    <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <div class="container">
+            <div class="card login-card">
+              <div class="row no-gutters">
+                <div class="col-md-5">
+                  <img src="https://firebasestorage.googleapis.com/v0/b/communications-service-manager.appspot.com/o/Website%20Assets%2FCall%20center%20back_photos_v2_faces_x2.jpg?alt=media&token=b68e1ef3-4054-4a2f-889f-50cc870c6244" alt="login" class="login-card-img">
+                </div>
+                <div class="col-md-7">
+                  <div class="card-body">
+                    <div class="brand-wrapper">
+                      <img src="https://firebasestorage.googleapis.com/v0/b/communications-service-manager.appspot.com/o/Website%20Assets%2FFull%20Logo.png?alt=media&token=71a5daaf-4f65-4b63-9a4d-96c7d1816bcf" alt="logo" class="logo">
+                    </div>
+                    <p class="login-card-description">Sign into your account</p>
+                    <form [formGroup]='signinForm' (ngSubmit)="signinForm.valid && signin()" style="max-width: 326px">
+                      <div class="form-group mt-4">
+                        <label>Email</label>
+                        <label for="email" class="sr-only">Email</label>
+                        <app-text-input [type]="'email'" id="'email'" [formControl]='signinForm.controls["accountId"]' [label]='"email"' [placeholder]='"Email"'></app-text-input>
+                      </div>
+                      <div class="form-group mb-4">
+                        <label>Create Password</label>
+                        <label for="password" class="sr-only">Password</label>
+                        <app-text-input [type]="'password'" id="'password'" [formControl]='signinForm.controls["password"]' [label]='"password"' [placeholder]='"*************"'></app-text-input>
+                      </div>
+
+                      <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Login">
+                    </form>
+                      <a href="#!" class="forgot-password-link">Forgot password?</a>
+                      <p class="login-card-footer-text">Don't have an account? <a class="text-reset" routerLink="/signup">Register here</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>        
+    </main>
+</body>

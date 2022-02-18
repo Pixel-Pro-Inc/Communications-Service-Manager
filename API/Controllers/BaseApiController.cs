@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -38,11 +39,11 @@ namespace API.Controllers
 
             List<User> users = await _firebaseDataContext.GetData<User>("Account");
 
-            int count = users.Where(u => u.Email == accountID || u.PhoneNumber.ToString() == accountID).ToList().Count;
+            int count = users.Where(u => u.Email == accountID || u.APIKey == accountID).ToList().Count;
 
             if (count != 0)
             {
-                return users.Where(u => u.Email == accountID || u.PhoneNumber.ToString() == accountID).ToList()[0];
+                return users.Where(u => u.Email == accountID || u.APIKey == accountID).ToList()[0];
             }
 
             return null;
@@ -53,6 +54,17 @@ namespace API.Controllers
         public string FormatAmountString(string amount)
         {
             return String.Format("{0:n}", float.Parse(amount));
+        }
+
+        protected string GenerateAPIKey()
+        {
+            var key = new byte[32];
+            using (var generator = RandomNumberGenerator.Create())
+                generator.GetBytes(key);
+
+            string apiKey = Convert.ToBase64String(key);
+
+            return apiKey;
         }
 
         protected string[] GetNameAndData(string input)

@@ -1,0 +1,16 @@
+<div class="form-group">
+    <input 
+    [class.is-invalid]="ngControl.touched && ngControl.invalid"
+    type={{type}} 
+    id={{id}}
+    class="form-control"    
+    [formControl] ="ngControl.control" 
+    placeholder={{placeholder}}>
+    <div *ngIf="ngControl.control.errors?.required" class="invalid-feedback">Please enter your {{label}}</div>
+    <div *ngIf="ngControl.control.errors?.email" class="invalid-feedback">Please enter a valid {{label}} address</div>
+    <div *ngIf="ngControl.control.errors?.minlength" class="invalid-feedback">Your {{label}} must be at least {{ngControl.control.errors.minlength['requiredLength']}} characters</div>
+    <div *ngIf="ngControl.control.errors?.maxlength" class="invalid-feedback">Your {{label}} must be at most {{ngControl.control.errors.maxlength['requiredLength']}} characters</div>
+    <div *ngIf="ngControl.control.errors?.isMatching" class="invalid-feedback">Your {{label}}s dont match</div>
+    <div *ngIf="ngControl.control.errors?.hasNumbers" class="invalid-feedback">You cannot have numbers or special characters in your {{label}}</div>
+    <div *ngIf="ngControl.control.errors?.hasLetters" class="invalid-feedback">You can on have numbers in {{label}}</div>
+</div>
