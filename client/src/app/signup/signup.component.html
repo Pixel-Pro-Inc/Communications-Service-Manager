@@ -1,1 +1,45 @@
-<p>signup works!</p>
+<body>
+    <main class="center-div">
+        <div class="container">
+            <div class="form-back card login-card">
+                <div style="margin: 50px;">
+                    <div style="padding-left: 2%;">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/communications-service-manager.appspot.com/o/Website%20Assets%2FFull%20Logo.png?alt=media&token=71a5daaf-4f65-4b63-9a4d-96c7d1816bcf" alt="logo" height="200px">
+                    </div>
+                    <hr>
+                    <div style="padding-left: 5%; padding-right: 5%; padding-bottom: 5%;">
+                        <h2>Create your account</h2>
+                        <form [formGroup]='signupForm' (ngSubmit)="signupForm.valid && createAccount()" style="max-width: 600px">
+                            <div class="d-flex">
+                                <div class="form-group mt-4">
+                                    <label>Email</label>
+                                    <label for="email" class="sr-only">Email</label>
+                                    <app-text-input [type]="'email'" id="'email'" [formControl]='signupForm.controls["email"]' [label]='"email"' [placeholder]='"Email"'></app-text-input>
+                                </div>
+                                <div class="form-group mt-4 ml-3">
+                                    <label>Organization</label>
+                                    <label for="text" class="sr-only">Organization</label>
+                                    <app-text-input [type]="'text'" id="'organization'" [formControl]='signupForm.controls["organization"]' [label]='"organization name"' [placeholder]='"Organization name"'></app-text-input>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="form-group mb-4">
+                                    <label>Create Password</label>
+                                    <label for="password" class="sr-only">Password</label>
+                                    <app-text-input [type]="'password'" id="'password'" [formControl]='signupForm.controls["password"]' [label]='"password"' [placeholder]='"*************"'></app-text-input>
+                                  </div>
+                                <div class="form-group mb-4 ml-3">
+                                    <label>Confirm Password</label>
+                                    <label for="confirmPassword" class="sr-only">Confirm Password</label>
+                                    <app-text-input [type]="'password'" id="'confirmPassword'" [formControl]='signupForm.controls["confirmPassword"]' [label]='"password"' [placeholder]='"*************"'></app-text-input>
+                                </div>
+                            </div>
+                            <input name="login" id="login" class="btn btn-block login-btn mb-4" [disabled]="signupForm.status == 'INVALID'" type="submit" value="Submit">
+                            <p class="login-card-footer-text">Already have an account? <a class="text-reset" routerLink="/signin">Sign in here</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
