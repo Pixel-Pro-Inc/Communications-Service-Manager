@@ -17,7 +17,8 @@ namespace API.Entities
         public byte[] PasswordSalt { get; set; }
         public string AccountType { get; set; }
         public bool Disabled { get; set; }
-        public ICollection<Message> MyProperty { get; set; }
+        public ICollection<int> MessagesRecieved { get; set; }
+        //Create a byte[] for the apiKey
 
         public string GetUserName()
         {
