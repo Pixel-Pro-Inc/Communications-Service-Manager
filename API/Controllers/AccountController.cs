@@ -28,11 +28,6 @@ namespace API.Controllers
         {
             using var hmac = new HMACSHA512();
 
-            if (await GetUser(signUpDto.Phonenumber.ToString()) != null)
-            {
-                return BadRequest("You already have an account");
-            }
-
             if (await GetUser(signUpDto.Email) != null)
             {
                 return BadRequest("You already have an account");
@@ -40,31 +35,24 @@ namespace API.Controllers
 
             User appUser = new User()
             {
-                FirstName = signUpDto.Firstname,
-                LastName = signUpDto.Lastname,
+                OrganizationName = signUpDto.OrganizationName,
                 Email = signUpDto.Email,
-                DateOfBirth = signUpDto.Dateofbirth,
+                APIKey = GenerateAPIKey(),
                 PasswordSalt = hmac.Key,
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(signUpDto.Password)),
-                AccountType = signUpDto.AccountType,
-                PhoneNumber = signUpDto.Phonenumber,
             };
 
             appUser.Id = await GetId("Account");
 
             _firebaseDataContext.StoreData("Account/" + appUser.Id, appUser);
 
-            communicationsController.SendMessage("76199359", "yewotheu123456789@gmail.com", appUser.GetUserName() + " Created an account.", "Blue Union Account Creation");
+            communicationsController.SendMessage("76199359", "yewotheu123456789@gmail.com", appUser.OrganizationName + " Created an account.", "Core Communications Account Creation");
 
             return new UserDto() {
-                Firstname = signUpDto.Firstname,
-                Lastname = signUpDto.Lastname,
-                Email = signUpDto.Email,
-                AccountType = signUpDto.AccountType,
-                Phonenumber = signUpDto.Phonenumber,
-                Token = _tokenService.CreateToken(appUser),
-                Disabled = appUser.Disabled,
-                Username = appUser.GetUserName()
+                APIKey = appUser.APIKey,
+                Email = appUser.Email,
+                OrganizationName = appUser.OrganizationName,
+                Token= _tokenService.CreateToken(appUser),
             };
         }
         #endregion
@@ -75,9 +63,6 @@ namespace API.Controllers
             //Checks if the account exists
             if (await GetUser(loginDto.AccountId) == null)
                 return BadRequest("This account does not exist");
-
-            if ((await GetUser(loginDto.AccountId)).Disabled)
-                return BadRequest("Your account has been disabled");
 
             User user = await GetUser(loginDto.AccountId);
 
@@ -90,15 +75,12 @@ namespace API.Controllers
                     return Unauthorized("Wrong password");
             }
 
-            return new UserDto() {
-                Firstname = user.FirstName,
-                Lastname = user.LastName,
+            return new UserDto()
+            {
+                APIKey = user.APIKey,
                 Email = user.Email,
-                Phonenumber = user.PhoneNumber,
+                OrganizationName = user.OrganizationName,
                 Token = _tokenService.CreateToken(user),
-                AccountType = user.AccountType,
-                Disabled = user.Disabled,
-                Username = user.GetUserName()
             };
         }
         #endregion
