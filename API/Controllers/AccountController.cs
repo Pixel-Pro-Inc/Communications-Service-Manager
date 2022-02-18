@@ -35,7 +35,7 @@ namespace API.Controllers
 
             User appUser = new User()
             {
-                OrganizationName = signUpDto.OrganizationName,
+                OrganizationName = signUpDto.Organization,
                 Email = signUpDto.Email,
                 APIKey = GenerateAPIKey(),
                 PasswordSalt = hmac.Key,

@@ -14,6 +14,7 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     SigninComponent,
     DashboardComponent,
     NavComponent,
-    TextInputComponent
+    TextInputComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,

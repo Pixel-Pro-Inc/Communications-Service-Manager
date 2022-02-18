@@ -43,5 +43,6 @@ export class AccountService {
 
   logout(){
     this.shared.removeUser();
+    this.shared.router.navigateByUrl('/signin');
   }
 }
