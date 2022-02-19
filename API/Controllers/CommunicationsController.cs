@@ -9,6 +9,9 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
+using Twilio.TwiML;
+using Twilio.TwiML.Messaging;
+using Twilio.Types;
 
 namespace API.Controllers
 {
@@ -73,10 +76,10 @@ namespace API.Controllers
             return message;
         }
 
-        private async void SendSMS()
+        private async void SendSMS(string msg, string phonenumber)
         {
             //Send SMS
-            /*
+           
              TwilioClient.Init(apiKeySid, apiKeySecret, accountSid);
 
             var message = await MessageResource.CreateAsync(
@@ -84,7 +87,7 @@ namespace API.Controllers
                 from: "BOTC",
                 to: new Twilio.Types.PhoneNumber("+267" + phonenumber)
             );
-             */
+            Console.WriteLine("Sms has been sent.");
 
         }
         [HttpPost("sendEmail")]
@@ -104,5 +107,37 @@ namespace API.Controllers
             var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
             return response;
         }
+
+
+        //This is for sandBox testing. Please note to use the correct info when in production or when submitting, check code for more info
+        [HttpPost("sendwhatsapp")]
+        public void SendViaWhatsapp()
+        {
+            var authToken = "5a1a5a6da35cd87d05b58e7bf776e8d2";
+            TwilioClient.Init(accountSid, authToken);
+
+            var messageOptions = new CreateMessageOptions(
+                new PhoneNumber("whatsapp:+26776181742"));
+            //The number below will be replaced with the approved one from whatsapp
+            messageOptions.From = new PhoneNumber("whatsapp:+14155238886");
+            messageOptions.Body = "At least Yewo won't be too mad since we got this to work";
+
+            var message = MessageResource.Create(messageOptions);
+            Console.WriteLine(message.Body);
+        }
+
+        //This is a method that will catch twillo's webhooks for testing
+        [HttpPost("respondwhatsapp")]
+        public void RespondWhatsapp()
+        {
+            var response = new MessagingResponse();
+            var message = new Message();
+            message.Body("Hello World!");
+            response.Append(message);
+            response.Redirect(url: new Uri("https://demo.twilio.com/welcome/sms/"));
+
+            Console.WriteLine(response.ToString());
+        }
+
     }
 }
