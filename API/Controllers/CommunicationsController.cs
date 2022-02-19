@@ -91,25 +91,40 @@ namespace API.Controllers
 
         }
         [HttpPost("sendEmail")]
-        private async Task<Response> SendEmail()
+        public async Task<Response> SendEmail()
         {
-
-            var apiKey = Configuration["SendGridsettings:apiKey"];
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
                 From = new EmailAddress("pixelprocompanyco@gmail.com", "PX Team"),
                 Subject = "Sending with Twilio SendGrid is Fun",
                 PlainTextContent = "and easy to do anywhere, even with C#",
-                HtmlContent = "<strong>and easy to do anywhere, even with C#</strong>"
+                HtmlContent = "<strong>and easy to do anywhere, even with C#</strong>",
+                ReplyTo = new EmailAddress("apexmachine2@gmail.com")
             };
-            msg.AddTo(new EmailAddress("pixelprocompanyco@gmail.com", "Test User"));
+            //msg.AddTo(new EmailAddress("pixelprocompanyco@gmail.com", "Test User"));
             var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
             return response;
+
+            /*
+            var apiKey = Environment.GetEnvironmentVariable("TestingSendGridKey");
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("test@example.com", "Example User");
+            var subject = "Sending with SendGrid is Fun";
+            var to = new EmailAddress("test@example.com", "Example User");
+            var plainTextContent = "and easy to do anywhere, even with C#";
+            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            return await client.SendEmailAsync(msg);
+            */
+
+
         }
 
 
         //This is for sandBox testing. Please note to use the correct info when in production or when submitting, check code for more info
+        //The sandbox can't be used for more than 24 hours
         [HttpPost("sendwhatsapp")]
         public void SendViaWhatsapp()
         {
@@ -127,12 +142,13 @@ namespace API.Controllers
         }
 
         //This is a method that will catch twillo's webhooks for testing
+        //It's does seem to be firing so I guess you'll have to figure that out
         [HttpPost("respondwhatsapp")]
         public void RespondWhatsapp()
         {
             var response = new MessagingResponse();
             var message = new Message();
-            message.Body("Hello World!");
+            message.Body("Wait, you can see me?!");
             response.Append(message);
             response.Redirect(url: new Uri("https://demo.twilio.com/welcome/sms/"));
 
