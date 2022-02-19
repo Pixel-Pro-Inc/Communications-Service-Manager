@@ -27,8 +27,6 @@ export class DashboardComponent implements OnInit {
   logs: any = {};
   constructor(private shared: SharedService, private messageService:MessageService) { }
 
-  constructor(public shared: SharedService) { }
-
   ngOnInit(): void {
     this.user = this.shared.getUser();
     console.log("Whats the api key doing in the code yewo, Honest question, no judgement");
