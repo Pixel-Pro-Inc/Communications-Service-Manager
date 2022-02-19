@@ -157,7 +157,7 @@
                 </div>
             </div>
 
-            <div #SendMessages>                
+            <div *ngIf="false" #SendMessages>
                 <div class="item-back mt-5">
                     <div class="bg-dark text-light" style="padding: 10px;">
                         <h3 style="padding: 10px;"><i class="fa fa-envelope fa-2x mr-3 mb-4"></i>Send One Directional Messages</h3>
@@ -188,10 +188,15 @@
             </div>
 
             <div *ngIf="false" #LiveChat>
-
+                <div class="item-back mt-5">
+                    <div class="bg-dark text-light mb-4" style="padding: 10px;">
+                        <h3 style="padding: 10px;"><i class="fa fa-exchange fa-2x mr-3 mb-4"></i>Live Chat</h3>
+                    </div>
+                    <app-live-chat></app-live-chat>
+                </div>
             </div>
 
-            <div *ngIf="false" #Messaging Log>
+            <div #Messaging Log>
                 <div class="item-back mt-5">
                     <div class="d-flex align-items-center justify-content-between">
                         <h4>Messaging Log</h4>
@@ -210,14 +215,15 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <ng-container>
+                          <ng-container *ngFor="let x of logs">
                             <tr class="shadow-sm jumbotron">
-                              <td>18/02/2022 10:52:05</td>
-                              <td>Incoming</td>
-                              <td>+267 76199359</td>
-                              <td>Botswana Digital Innovation Hub</td>
-                              <td>SMS</td>
-                              <td>Hello, Botswana Digital Innovation Hub</td>
+                              <td>{{x.dateSent}}</td>
+                              <td *ngIf="x.author != shared.getUser().organizationSenderCode">Incoming</td>
+                              <td *ngIf="x.author == shared.getUser().organizationSenderCode">Outgoing</td>
+                              <td>{{x.author}}</td>
+                              <td>{{x.recipient}}</td>
+                              <td>{{x.channel}}</td>
+                              <td>{{x.body}}</td>
                             </tr>
                           </ng-container>
                         </tbody>

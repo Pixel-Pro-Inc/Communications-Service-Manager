@@ -9,6 +9,7 @@ namespace API.Entities
     {
         public int Id { get; set; }
         public string OrganizationName { get; set; }
+        public string OrganizationSenderCode { get; set; }
         public string APIKey { get; set; }
         public string Email { get; set; }
         public byte[] PasswordHash { get; set; }

@@ -453,3 +453,5 @@ appsettings.json
 !.vscode/extensions.json
 
 appsettings.json
+.vs/
+.vs/Communications-Service-Manager/v16/.suo

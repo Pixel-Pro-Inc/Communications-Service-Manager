@@ -3,6 +3,7 @@ using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,6 +86,34 @@ namespace API.Controllers
             }
 
             return vals;
+        }
+
+        protected async Task<List<string>> ConvertToList(string input)
+        {
+            string[] stringsArray = input.Split(',');
+            List<string> stringsList = new List<string>(stringsArray.Length);
+            stringsList.AddRange(stringsArray);
+
+            List<string> result = new List<string>();
+
+            foreach (string item in stringsList)
+            {
+                result.Add(item.Trim());
+            }
+
+            return result;
+        }
+
+        protected string GetJSONString(string input)
+        {
+            /*IDictionary<string, string> keyValuePairs = new Dictionary<string, string>();
+
+            keyValuePairs.Add("phonenumber", input);*/
+
+            List<string> participant = new List<string>();
+            participant.Add(input);
+
+            return JsonConvert.SerializeObject(participant);
         }
     }
 }
