@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from '../_services/message.service';
 import { SharedService } from '../_services/shared.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { SharedService } from '../_services/shared.service';
 })
 export class DashboardComponent implements OnInit {
   user: any = {};
+  model:any = {};
 
   code = `
   {
@@ -22,10 +24,17 @@ export class DashboardComponent implements OnInit {
   }
   `;
 
-  constructor(private shared: SharedService) { }
+  logs: any = {};
+  constructor(private shared: SharedService, private messageService:MessageService) { }
+
+  constructor(public shared: SharedService) { }
 
   ngOnInit(): void {
     this.user = this.shared.getUser();
+    console.log("Whats the api key doing in the code yewo, Honest question, no judgement");
   }
 
+  send() {
+    this.messageService.SendMessage(this.model);
+  }
 }

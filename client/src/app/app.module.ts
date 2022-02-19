@@ -15,6 +15,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { ChartComponent } from './chart/chart.component';
+import { LiveChatComponent } from './live-chat/live-chat.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ChartComponent } from './chart/chart.component';
     DashboardComponent,
     NavComponent,
     TextInputComponent,
-    ChartComponent
+    ChartComponent,
+    LiveChatComponent
   ],
   imports: [
     BrowserModule,

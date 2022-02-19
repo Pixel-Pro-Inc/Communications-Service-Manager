@@ -8,6 +8,7 @@ namespace API.DTO
     public class UserDto
     {
         public string OrganizationName { get; set; }
+        public string OrganizationSenderCode { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }
         public string APIKey { get; set; }

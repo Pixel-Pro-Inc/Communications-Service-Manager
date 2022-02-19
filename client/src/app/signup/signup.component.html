@@ -17,9 +17,14 @@
                                     <app-text-input [type]="'email'" id="'email'" [formControl]='signupForm.controls["email"]' [label]='"email"' [placeholder]='"Email"'></app-text-input>
                                 </div>
                                 <div class="form-group mt-4 ml-3">
-                                    <label>Organization</label>
+                                    <label>Organization Name</label>
                                     <label for="text" class="sr-only">Organization</label>
                                     <app-text-input [type]="'text'" id="'organization'" [formControl]='signupForm.controls["organization"]' [label]='"organization name"' [placeholder]='"Organization name"'></app-text-input>
+                                </div>
+                                <div class="form-group mt-4 ml-3">
+                                    <label>Organization Abbrv</label>
+                                    <label for="text" class="sr-only">Organization Name</label>
+                                    <app-text-input [type]="'text'" id="'organizatio'" [formControl]='signupForm.controls["senderId"]' [label]='"Organization Name Short Form"' [placeholder]='"BDIH"'></app-text-input>
                                 </div>
                             </div>
                             <div class="d-flex">
