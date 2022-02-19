@@ -41,6 +41,9 @@ namespace API.Controllers
                 OrganizationSenderCode = signUpDto.SenderId,
                 PasswordSalt = hmac.Key,
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(signUpDto.Password)),
+                //Create the hash for the apiKey
+                //AccountType = signUpDto.AccountType,
+                //PhoneNumber = signUpDto.Phonenumber,
             };
 
             appUser.Id = await GetId("Account");

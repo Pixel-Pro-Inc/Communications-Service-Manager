@@ -14,5 +14,9 @@ namespace API.Entities
         public string Email { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public string AccountType { get; set; }
+        public bool Disabled { get; set; }
+        public ICollection<int> MessagesRecieved { get; set; }
+
     }
 }

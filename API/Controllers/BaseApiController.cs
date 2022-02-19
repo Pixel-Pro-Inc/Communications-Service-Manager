@@ -24,12 +24,14 @@ namespace API.Controllers
             _firebaseDataContext = new FirebaseDataContext();
         }
 
-
+        /*
         [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
+         
+         */
 
         //Removed this from AccountController so it can be shared with all controllers but noone else, hence the protected modifier
         //Also Why did you decided to use only email and PhoneNumbers here
