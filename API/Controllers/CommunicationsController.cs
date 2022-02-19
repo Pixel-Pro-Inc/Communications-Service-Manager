@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API.DTO;
+using Microsoft.AspNetCore.Mvc;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
@@ -20,6 +21,8 @@ namespace API.Controllers
         private readonly string accountSid = Configuration["twillosettings:accountSid"];
         private readonly string apiKeySid = Configuration["twillosettings:apiKeySid"];
         private readonly string apiKeySecret = Configuration["twillosettings:apiKeySecret"];
+
+        public List<string> messageFeedback { get; set; }
         public CommunicationsController()
         {
 
@@ -62,18 +65,20 @@ namespace API.Controllers
              */
 
         }
-        public async Task<string> Send()
+        public List<string> Sendback(List<Response> responses)
         {
-
-            var response = await SendEmail();
-
-            var message = "Your message could not be processed at this time. Please try again later.";
-
-            if (response.StatusCode == HttpStatusCode.Accepted)
+            List<string> mes = new List<string>();
+            foreach (var resp in responses)
             {
-                message = "Thank you for your message, someone will be in touch soon!";
+                var message = "Your messages could not be processed at this time. Please try again later.";
+
+                if (resp.StatusCode == HttpStatusCode.Accepted)
+                {
+                    message = "Thank you for your message, someone will be in touch soon!";
+                }
+                mes.Add(message);
             }
-            return message;
+            return mes;
         }
 
         private async void SendSMS(string msg, string phonenumber)
@@ -91,20 +96,31 @@ namespace API.Controllers
 
         }
         [HttpPost("sendEmail")]
-        public async Task<Response> SendEmail()
+        public async Task<List<Response>> SendEmail(CreateMessageDto createMessageDto)
         {
+            //Because if it is true that means the message is whatsapp exclusive
+            if (createMessageDto.Whatsappswitch) return null;
             var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+            Console.WriteLine("Don't forget to set up the environment variables for the online hosted version");
             var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            List<Response> response = new List<Response>();
+            //Here put in logic for batch sending. As it stands the O notation is linear instead of log, so we will need to bring in a library,
+            //I want to hack it with a hashmap but implementation seems bothersome, which is why I just made this not for whoever is reading, so 
+            //please don't reel back in horror at the logic just yet.
+            foreach (var reciepient in createMessageDto.recipients)
             {
-                From = new EmailAddress("pixelprocompanyco@gmail.com", "PX Team"),
-                Subject = "Sending with Twilio SendGrid is Fun",
-                PlainTextContent = "and easy to do anywhere, even with C#",
-                HtmlContent = "<strong>and easy to do anywhere, even with C#</strong>",
-                ReplyTo = new EmailAddress("apexmachine2@gmail.com")
-            };
-            //msg.AddTo(new EmailAddress("pixelprocompanyco@gmail.com", "Test User"));
-            var response = await client.SendEmailAsync(msg).ConfigureAwait(false);
+                var msg = new SendGridMessage()
+                {
+                    From = new EmailAddress("pixelprocompanyco@gmail.com", "PX Team"),
+                    Subject = createMessageDto.subject,
+                    PlainTextContent = createMessageDto.content,
+                    HtmlContent = "\n Powered by PixelPro",
+                    ReplyTo = new EmailAddress("apexmachine2@gmail.com")
+                };
+                response.Add(await client.SendEmailAsync(msg).ConfigureAwait(false));
+            }
+            //This should give messages to 
+            messageFeedback=Sendback(response);
             return response;
 
             /*
@@ -126,7 +142,7 @@ namespace API.Controllers
         //This is for sandBox testing. Please note to use the correct info when in production or when submitting, check code for more info
         //The sandbox can't be used for more than 24 hours
         [HttpPost("sendwhatsapp")]
-        public void SendViaWhatsapp()
+        public void SendViaWhatsapp(CreateMessageDto createMessageDto)
         {
             var authToken = "5a1a5a6da35cd87d05b58e7bf776e8d2";
             TwilioClient.Init(accountSid, authToken);
