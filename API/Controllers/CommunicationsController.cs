@@ -65,6 +65,7 @@ namespace API.Controllers
              */
 
         }
+
         public List<string> Sendback(List<Response> responses)
         {
             List<string> mes = new List<string>();
@@ -80,8 +81,8 @@ namespace API.Controllers
             }
             return mes;
         }
-
-        private async void SendSMS(string msg, string phonenumber)
+        [HttpPost("sendsms")]
+        public async void SendSMS(string msg, string phonenumber)
         {
             //Send SMS
            
@@ -95,7 +96,7 @@ namespace API.Controllers
             Console.WriteLine("Sms has been sent.");
 
         }
-        [HttpPost("sendEmail")]
+        [HttpPost("sendemail")]
         public async Task<List<Response>> SendEmail(CreateMessageDto createMessageDto)
         {
             //Because if it is true that means the message is whatsapp exclusive
@@ -151,7 +152,7 @@ namespace API.Controllers
             {
                 //if(reciepient.Contains(alphabet))continue;
                 var messageOptions = new CreateMessageOptions(
-                new PhoneNumber(reciepient));
+                new PhoneNumber("whatsapp:+267"+reciepient));
                 //The number below will be replaced with the approved one from whatsapp
                 messageOptions.From = new PhoneNumber("whatsapp:+14155238886");
                 messageOptions.Body = createMessageDto.content;
@@ -161,6 +162,39 @@ namespace API.Controllers
             }
             
         }
+        /*
+         
+        [HttpPost("sendwhatsappSS")]
+        public void MethodName()
+        {
+            var authToken = "5a1a5a6da35cd87d05b58e7bf776e8d2";
+            TwilioClient.Init(accountSid, authToken);
+
+            var messageOptions = new CreateMessageOptions(
+                new PhoneNumber("whatsapp:+26776181742"));
+            messageOptions.From = new PhoneNumber("whatsapp:+14155238886");
+            messageOptions.Body = "The test works perfectly from the app";
+
+            var message = MessageResource.Create(messageOptions);
+            Console.WriteLine(message.Body);
+        }
+
+        [HttpPost("sendwhatsappSS")]
+        public void MethodName()
+        {
+            var authToken = "5a1a5a6da35cd87d05b58e7bf776e8d2";
+            TwilioClient.Init(accountSid, authToken);
+
+            var messageOptions = new CreateMessageOptions(
+                new PhoneNumber("whatsapp:+26776181742"));
+            messageOptions.From = new PhoneNumber("whatsapp:+14155238886");
+            messageOptions.Body = "The test works perfectly from the app";
+
+            var message = MessageResource.Create(messageOptions);
+            Console.WriteLine(message.Body);
+        }
+
+         */
 
         //This is a method that will catch twillo's webhooks for testing
         //It's does seem to be firing so I guess you'll have to figure that out

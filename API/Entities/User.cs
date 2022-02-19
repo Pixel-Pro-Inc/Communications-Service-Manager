@@ -17,9 +17,5 @@ namespace API.Entities
         public bool Disabled { get; set; }
         public ICollection<int> MessagesRecieved { get; set; }
 
-        public string GetUserName()
-        {
-            return FirstName + ' ' + LastName;
-        }
     }
 }

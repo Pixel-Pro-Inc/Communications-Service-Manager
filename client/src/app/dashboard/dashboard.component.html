@@ -164,20 +164,25 @@
                     </div>
 
                     <div class="mt-5" style="padding-left: 30px; padding-right: 30px;">
-                        <label>Recipients (Please separate with commas)</label>
-                        <input class="form-control mb-4" type="text" placeholder="76199359, yewotheu123456789@gmail.com">
-    
-                        <p><label><input type="checkbox" class="mr-3">Send To Whatsapp Only</label></p>
-                        <p><label><input type="checkbox" class="mr-3">Send To Whatsapp Also</label></p>
-
+                        <form #signupform="ngForm" (ngSubmit)="send()" class="mt-3"><label>Recipients (Please separate with commas)</label>
+                            <input class="form-control mb-4" type="text" [(ngModel)]="model.recipients" name="recipients" placeholder="76199359, yewotheu123456789@gmail.com">
+        
+                            
+                        <p><label><input type="checkbox" class="mr-3" [(ngModel)]="model.WhatsappOnly" name="WhatsappOnly">Send To Whatsapp Only</label></p>
+                        <p><label><input type="checkbox" class="mr-3"[(ngModel)]="!model.WhatsappOnly" name="WhatsappIncluded">Send To Whatsapp Also</label></p>
                         <label>Subject</label>
-                        <input class="form-control mb-4" type="text" placeholder="Subject of Message">
+                        <input class="form-control mb-4" type="text" [(ngModel)]="model.subject" name="subject" placeholder="Subject of Message">
 
-                        <textarea class="form-control" style="min-height: 400px;">
+                        <textarea class="form-control" [(ngModel)]="model.content" name="content" style="min-height: 400px;">
 
                         </textarea>
+                            
+                        <button class="btn btn-info mt-4" type="submit"><i class="fa fa-share"></i> Send Message</button>
+                        </form>
+                        
 
-                        <button class="btn btn-info mt-4"><i class="fa fa-share"></i> Send Message</button>
+                       
+
                     </div>                 
                 </div>
             </div>
