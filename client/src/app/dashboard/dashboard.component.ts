@@ -22,7 +22,9 @@ export class DashboardComponent implements OnInit {
   }
   `;
 
-  constructor(private shared: SharedService) { }
+  logs: any = {};
+
+  constructor(public shared: SharedService) { }
 
   ngOnInit(): void {
     this.user = this.shared.getUser();

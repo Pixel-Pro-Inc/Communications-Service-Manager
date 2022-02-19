@@ -1,0 +1,47 @@
+<div class="d-flex">
+    <div class="login-card" style="width: 346px; padding-left: 10px;">
+        <p class="login-card-description">Start a live chat</p>
+        <form [formGroup]='startChatForm' (ngSubmit)="startChatForm.valid && startLiveChat()" style="max-width: 326px">
+            <div class="form-group mt-4">
+              <label>Participants Phone numbers (Up to 1000)</label>
+              <label for="email" class="sr-only">Phonenumber</label>
+              <app-text-input [type]="'text'" id="'num'" [formControl]='startChatForm.controls["number"]' [label]='"phone number"' [placeholder]='"Phonenumber, Phonenumber2"'></app-text-input>
+            </div>
+    
+            <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" [disabled]="!startChatForm.valid" value="Start New Chat">
+        </form>
+    </div>    
+
+    <div class="flex-fill">
+      <div class="jumbotron flex-fill" style="overflow-y: scroll; max-height: 600px; margin-left: 30px;">
+        <ng-container *ngFor="let m of messages">
+          <div *ngIf="m.author != shared.getUser().organizationSenderCode" class="d-flex flex-row mb-3">
+            <div class="message-box msg-bg" style="width: 500px;">
+              <div style="padding-left: 10px; padding-top: 5px;">
+                <b>{{m.author}}</b>
+                <p>{{m.body}}</p>
+              </div>        
+            </div>
+          </div>      
+    
+          <div *ngIf="m.author == shared.getUser().organizationSenderCode" class="d-flex flex-row-reverse mb-3">
+            <div class="message-box msg-bg-1 text-light" style="width: 500px;">
+              <div style="padding-left: 10px; padding-top: 5px;">
+                <b>{{m.author}}</b>
+                <p>{{m.body}}</p>
+              </div>        
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <form [formGroup]='msgForm' (ngSubmit)="msgForm.valid && sendMessage(msgForm.controls.message.value)" style="margin-left: 30px;">
+        <div class="d-flex">
+          <div class="form-group flex-fill">
+            <app-text-input [type]="'text'" id="'num'" [formControl]='msgForm.controls["message"]' [label]='"message"' [placeholder]='"Message"'></app-text-input>
+          </div>  
+          <button type="submit" [disabled]="!conversationStarted || !msgForm.valid" class="btn btn-info ml-2" style="height: 45px; width: 100px;"><i class="fa fa-paper-plane"></i></button>
+        </div>        
+    </form>
+    </div>    
+</div>
