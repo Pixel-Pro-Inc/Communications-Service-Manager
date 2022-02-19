@@ -147,14 +147,19 @@ namespace API.Controllers
             var authToken = "5a1a5a6da35cd87d05b58e7bf776e8d2";
             TwilioClient.Init(accountSid, authToken);
 
-            var messageOptions = new CreateMessageOptions(
-                new PhoneNumber("whatsapp:+26776181742"));
-            //The number below will be replaced with the approved one from whatsapp
-            messageOptions.From = new PhoneNumber("whatsapp:+14155238886");
-            messageOptions.Body = "At least Yewo won't be too mad since we got this to work";
+            foreach (var reciepient in createMessageDto.recipients)
+            {
+                //if(reciepient.Contains(alphabet))continue;
+                var messageOptions = new CreateMessageOptions(
+                new PhoneNumber(reciepient));
+                //The number below will be replaced with the approved one from whatsapp
+                messageOptions.From = new PhoneNumber("whatsapp:+14155238886");
+                messageOptions.Body = createMessageDto.content;
 
-            var message = MessageResource.Create(messageOptions);
-            Console.WriteLine(message.Body);
+                var message = MessageResource.Create(messageOptions);
+                Console.WriteLine(message.Body);
+            }
+            
         }
 
         //This is a method that will catch twillo's webhooks for testing
